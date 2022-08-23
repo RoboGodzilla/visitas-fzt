@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row" style="position: relative; height: 50px;">
+  <div class="fixed-action-btn click-to-toggle" style="position: absolute; display: inline-block; top: 20px">
+    <a class="btn-floating btn-large green">
+      <i class="large material-icons">mode_edit</i>
+    </a>
+    <ul>
+      <li><a class="btn-floating blue"><i class="material-icons">insert_chart</i></a></li>
+      <li><a class="btn-floating blue" href="{% url registro %}" ><i class="material-icons">add</i></a></li>
+    </ul>
+  </div>        
+</div>
+<div class="row">
+  <div class="col s12">
+    <table>
+      <thead>
+        <tr>
+          {% for obj in campos %}
+            <th>{{ obj }}</th>    
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for objeto in data %}
+        <tr>
+          {% for key, obj in objeto.items %}
+            {% if key == "id" %}
+            {% elif key == "is_active" %}
+              {% if obj == True%}
+                <td>
+                  <i class="material-icons">check</i>
+                </td>
+              {% elif obj == False %}
+                <td>
+                  <i class="material-icons">close</i>
+                </td>
+              {% endif %} 
+            {% else %}
+              <td>{{ obj }}</td>
+            {% endif %}
+          {% endfor %}
+          <td class="table_buttons" style="width: {% if detalles %} 140px {% else %} 100px {% endif %}; padding: 0 5px">
+            {% if detalles %}
+            <a class="waves-effect waves-light btn-floating blue ed_buttons scale-transition scale-out" href="{% url detalles objeto.id %}"><i class="material-icons">find_in_page</i></a>
+            {% endif %}
+            <a class="waves-effect waves-light btn-floating blue ed_buttons scale-transition scale-out" href=""><i class="material-icons">edit</i></a>
+            <a class="waves-effect waves-light btn-floating blue ed_buttons scale-transition scale-out" href=""><i class="material-icons">delete</i></a>
+            <script>
+              var obj = "{{ objeto.id }}";
+              console.log(obj);
+            </script>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock content %}
+
+  
+{% block script %}
+<script>
+  $(document).ready(function(){
+    $('.fixed-action-btn').floatingActionButton({
+      direction: 'left',
+      hoverEnabled: false
+    });
+    $("tbody").children().hover(function(){
+      $(this).find(".table_buttons").find('.ed_buttons').addClass('scale-in');
+    } , function(){
+      $(this).find(".table_buttons").find('.ed_buttons').removeClass('scale-in');
+    });
+  });
+</script>
+{% endblock script %}

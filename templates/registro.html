@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+  {% if menu == 'visita' %}
+
+  <div class="row">
+    <br>
+  </div>
+  <div class="row">
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="row">
+        <blockquote>
+          <h5 class="blue-text" >Escuela</h5>
+        </blockquote>
+        {{ eform }}
+        <div class="row">
+          <div class="input-field col s4">
+            <input id="first_name" type="text" class="validate">
+            <label for="first_name">Nombre</label>
+          </div>
+          <div class="input-field col s4">
+            <input id="last_name" type="text" class="validate">
+            <label for="last_name">Ciudad</label>
+          </div>
+          <div class="input-field col s4">
+            <input id="last_name" type="text" class="validate">
+            <label for="last_name">Estado</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="first_name" type="text" class="validate">
+            <label for="first_name">Modalidad</label>
+          </div>
+          <div class="input-field col s6">
+            <input id="last_name" type="text" class="validate">
+            <label for="last_name">Dependencia</label>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        {% for fields in form %}
+          <div class="input-field">
+            {% if fields.field.widget.input_type == "text" or "number" %}
+              {{ fields }}
+              <label for="id_{{ fields.name }}">{{ fields.label }}</label>
+            {% else %}
+              {{ fields }}
+              <label>{{ fields.label }}</label>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="row">
+        <blockquote>
+          <h5 class="blue-text" >Profesor</h5>
+        </blockquote>
+        {{ pform }}
+        <div class="row">
+          <div class="input-field col s4">
+            <input id="first_name" type="text" class="validate">
+            <label for="first_name">Nombre</label>
+          </div>
+          <div class="input-field col s4">
+            <input id="last_name" type="text" class="validate">
+            <label for="last_name">Cédula</label>
+          </div>
+          <div class="input-field col s4">
+            <input id="last_name" type="text" class="validate">
+            <label for="last_name">Telefono</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="first_name" type="text" class="validate">
+            <label for="first_name">Grados Asignados</label>
+          </div>
+          <div class="input-field col s6">
+            <input id="last_name" type="text" class="validate">
+            <label for="last_name">Escuela</label>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" name="_submit" class="btn green waves-effect waves-light">Guardar</button>
+    </form>
+  </div>
+
+  {% else %}
+
+  <div class="row">
+    <br>
+  </div>
+  <div class="row">
+    <div>
+      <form method="post">
+        {% csrf_token %}
+        {% for fields in form %}
+          <div class="input-field">
+            {% if fields.field.widget.input_type == "text" or "number" %}
+              {{ fields }}
+              <label for="id_{{ fields.name }}">{{ fields.label }}</label>
+            {% else %}
+              {{ fields }}
+              <label>{{ fields.label }}</label>
+            {% endif %}
+          </div>
+        {% endfor %}
+        <button type="submit" name="submit" class="btn green waves-effect waves-light">Guardar</button>
+      </form>
+    </div>
+  </div>
+
+  {% endif %}
+{% endblock content %}
+    
+{% block script %}
+  {% if messages %}
+    {% for message in messages %}
+      {% if 'success' or 'error' in message.tags %}
+        <script>
+          M.toast({text: '{{ message }}', classes: 'rounded'});
+        </script>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
+  {% comment %} Agregar script para profesores {% endcomment %}
+{% endblock script %}

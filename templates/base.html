@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visitas FZT</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/materialize.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/site.css' %}" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <nav  class="green">
+      <div class="nav-wrapper">
+        <a class="brand-logo center" style="height: 100%"><img src="{% static 'img/FZT.png' %}" alt="logo" style="height: calc(100% - 4px); margin-top: 2px"></a>
+        <ul id="nav" class="left hide-on-med-and-down">
+          {% comment %} 
+          <li><a href="sass.html">Sass</a></li>
+          <li><a href="badges.html">Components</a></li>
+          <li><a href="collapsible.html">JavaScript</a></li>
+          {% endcomment %}
+        </ul>
+        <div class="container"><a class="sidenav-trigger full hide-on-large-only" href="#" data-target="nav-mobile"><i class="material-icons">menu</i></a></div>
+      </div>
+    </nav>
+
+
+    <ul id="nav-mobile" class="sidenav sidenav-fixed">
+      <li><a href="{% url 'home' %}">Home</a></li>
+      <li><a href="{% url 'registro' %}">Registro</a></li>
+      <ul class="collapsible collapsible-accordion">
+
+        <li class="bold {% if menu == 'visita' %}active{% endif %}"><a class="collapsible-header waves-effect waves-teal" tabindex="0">Visitas</a>
+          <div class="collapsible-body">
+            <ul>
+              <li class="{% if submenu == 'visita' %}active blue{% endif %}"><a href="{% url 'visita' %}">Listado</a></li>
+              <li class="{% if submenu == 'registro' %}active blue{% endif %}"><a href="{% url 'registro' %}">Agregar</a></li>
+            </ul>
+          </div>
+        </li>
+        
+        <li class="bold {% if menu == 'datosvisita' %}active{% endif %}"><a class="collapsible-header waves-effect waves-teal" tabindex="0">Datos de Visita</a>
+          <div class="collapsible-body">
+            <ul>
+              <li class="{% if submenu == 'escuela' %}active blue{% endif %}"><a href="{% url 'escuela' %}">Escuelas</a></li>
+              <li class="{% if submenu == 'profesor' %}active blue{% endif %}"><a href="{% url 'profesor' %}">Profesores</a></li>
+              <li class="{% if submenu == 'asesor' %}active blue{% endif %}"><a href="{% url 'asesor' %}">Asesores</a></li>
+              <li class="{% if submenu == 'areaasesor' %}active blue{% endif %}"><a href="{% url 'areaasesoria' %}">Áreas de asesoria</a></li>
+              <li class="{% if submenu == 'tipovisita' %}active blue{% endif %}"><a href="{% url 'tipovisita' %}">Tipos de visita</a></li>
+              <li class="{% if submenu == 'enfoque' %}active blue{% endif %}"><a href="{% url 'enfoque' %}">Enfoques de visita</a></li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="bold {% if menu == 'catalogo' %}active{% endif %}"><a class="collapsible-header waves-effect waves-teal" tabindex="0">Catalogo</a>
+          <div class="collapsible-body">
+            <ul>
+              <li class="{% if submenu == 'pais' %}active blue{% endif %}"><a href="{% url 'pais' %}">Pais</a></li>
+              <li class="{% if submenu == 'estado' %}active blue{% endif %}"><a href="{% url 'estado' %}">Estado</a></li>
+              <li class="{% if submenu == 'ciudad' %}active blue{% endif %}"><a href="{% url 'ciudad' %}">Ciudad</a></li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="bold {% if menu == 'cuentas' %}active{% endif %}"><a class="collapsible-header waves-effect waves-teal" tabindex="0">Cuentas</a>
+          <div class="collapsible-body">
+            <ul>
+              <li class="{% if submenu == 'usuarios' %}active blue{% endif %}"><a href="{% url 'pais' %}">Usuarios</a></li>
+              <li class="{% if submenu == 'roles' %}active blue{% endif %}"><a href="{% url 'estado' %}">Roles</a></li>
+            </ul>
+          </div>
+        </li>
+        
+      </ul>
+    </ul>
+
+  </header>
+
+  <main>
+    <div class="container">
+      {% block content %}
+      {% endblock content %}
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="{% static 'js/materialize.js' %}"></script>
+  <script>
+    M.AutoInit();
+    $(document).ready(function() {
+      M.updateTextFields();
+      $('.sidenav').sidenav({
+        dragTargetWidth: '30px',
+      });
+    });
+  </script>
+  {% block script %}{% endblock script %}
+</body>
+</html>
