@@ -23,10 +23,10 @@ def tablavisita(request, *args, **kwargs):
 def registrovisita(request, *args, **kwargs):
   if request.method == "POST":
     eform = VisitaEscuelaForm(request.POST)
-    pform = VisitaProfesorForm(request.POST)
+    pform = DetalleProfesorFormSet(request.POST)
     form = VisitaForm(request.POST)
-    print(form.data)
-    print(form.errors)
+    print(pform.data)
+    print(pform.errors)
     if form.is_valid():
       form.save()
       messages.success(request, "Visita registrada correctamente")
@@ -34,7 +34,7 @@ def registrovisita(request, *args, **kwargs):
       form.add_error(None, "Visita no registrada")
   else:
     eform = VisitaEscuelaForm()
-    pform = VisitaProfesorForm()
+    pform = DetalleProfesorFormSet()
     form = VisitaForm()
   contexto = {
     "eform": eform,
