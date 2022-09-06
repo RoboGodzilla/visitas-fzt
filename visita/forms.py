@@ -14,6 +14,11 @@ class IdNombreMultipleModelChoiceField(forms.ModelMultipleChoiceField):
     label = str(obj.codigo) + " [" + obj.nombre + "]"
     return label
 
+class NombreMultipleModelChoiceField(forms.ModelMultipleChoiceField):
+  def label_from_instance(self, obj):
+    label = obj.nombre
+    return label
+
 class NombreModelChoiceField(forms.ModelChoiceField):
   def label_from_instance(self, obj):
     label = obj.nombre
@@ -27,13 +32,20 @@ class VisitaEscuelaForm(forms.ModelForm):
       'escuela'
     ]
 
-class VisitaProfesorForm(forms.ModelForm):
-  profesor = IdNombreMultipleModelChoiceField(queryset=Profesor.objects.filter(is_active=True))
+class DetalleProfesorForm(forms.ModelForm):
+  profesor = NombreModelChoiceField(queryset=Profesor.objects.filter(is_active=True))
+  enfoque = NombreMultipleModelChoiceField(queryset=Enfoque.objects.filter(is_active=True))
   class Meta:
-    model = Visita
-    fields = [
-      'profesor'
+    model = DetalleProfesor
+    exclude = [
+      'is_active',
+      'created_by',
+      'created_at',
+      'updated_by',
+      'updated_at',
     ]
+
+DetalleProfesorFormSet = forms.inlineformset_factory(Visita, DetalleProfesor, form=DetalleProfesorForm, extra=2)
 
 class VisitaForm(forms.ModelForm):
   asesoria = NombreModelChoiceField(queryset=Asesoria.objects.filter(is_active=True))

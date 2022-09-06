@@ -56,6 +56,7 @@ class Visita(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     fecha = models.DateField()
     duracion = models.DurationField()
+    escuela = models.ForeignKey(Escuela, on_delete=models.CASCADE)
     profesor = models.ManyToManyField(Profesor, through='DetalleProfesor')
     asesoria = models.ForeignKey(Asesoria, on_delete=models.CASCADE)
     tipo_visita = models.ForeignKey(TipoVisita, on_delete=models.CASCADE)

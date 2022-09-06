@@ -18,26 +18,26 @@
         {{ eform }}
         <div class="row">
           <div class="input-field col s4">
-            <input id="first_name" type="text" class="validate">
-            <label for="first_name">Nombre</label>
+            <input disabled id="escuela_nombre" type="text" class="validate">
+            <label for="escuela_nombre">Nombre</label>
           </div>
           <div class="input-field col s4">
-            <input id="last_name" type="text" class="validate">
-            <label for="last_name">Ciudad</label>
+            <input disabled id="escuela_ciudad" type="text" class="validate">
+            <label for="escuela_ciudad">Ciudad</label>
           </div>
           <div class="input-field col s4">
-            <input id="last_name" type="text" class="validate">
-            <label for="last_name">Estado</label>
+            <input disabled id="escuela_estado" type="text" class="validate">
+            <label for="escuela_estado">Estado</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col s6">
-            <input id="first_name" type="text" class="validate">
-            <label for="first_name">Modalidad</label>
+            <input disabled id="escuela_modalidad" type="text" class="validate">
+            <label for="escuela_modalidad">Modalidad</label>
           </div>
           <div class="input-field col s6">
-            <input id="last_name" type="text" class="validate">
-            <label for="last_name">Dependencia</label>
+            <input disabled id="escuela_dependencia" type="text" class="validate">
+            <label for="escuela_dependencia">Dependencia</label>
           </div>
         </div>
       </div>
@@ -60,7 +60,9 @@
         <blockquote>
           <h5 class="blue-text" >Profesor</h5>
         </blockquote>
-        {{ pform }}
+        {% for pf in pform %}
+          {{ pf }}
+        {% endfor %}
         <div class="row">
           <div class="input-field col s4">
             <input id="first_name" type="text" class="validate">
