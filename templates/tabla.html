@@ -27,6 +27,7 @@
         <tr>
           {% for key, obj in objeto.items %}
             {% if key == "id" %}
+            {% elif key == "profesores" %}
             {% elif key == "is_active" %}
               {% if obj == True%}
                 <td>

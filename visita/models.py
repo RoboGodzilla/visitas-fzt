@@ -57,7 +57,7 @@ class Visita(models.Model):
     fecha = models.DateField()
     duracion = models.DurationField()
     escuela = models.ForeignKey(Escuela, on_delete=models.CASCADE)
-    profesor = models.ManyToManyField(Profesor, through='DetalleProfesor')
+    profesor = models.ManyToManyField(Profesor, through='DetalleProfesor', through_fields=('visita', 'profesor'))
     asesoria = models.ForeignKey(Asesoria, on_delete=models.CASCADE)
     tipo_visita = models.ForeignKey(TipoVisita, on_delete=models.CASCADE)
     modalidad_visita = models.CharField(max_length=50, choices=MODALIDAD, default='Presencial')

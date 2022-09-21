@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/materialize.css' %}" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="{% static 'js/materialize.js' %}"></script>
+</head>
+
+<body>
+  <div class="login-div">
+    <div class="row">
+      <div class="logo"></div>
+    </div>
+    <div class="row center-align">
+      <h5>Ingresar</h5>
+      <h6>Visitas Escolares FZT</h6>
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+      {% for fields in form %}
+        <div class="row">
+          <div class="input-field col s12">
+            {% if fields.field.widget.input_type == "text" or "number" %}
+            {{ fields }}
+            <label for="id_{{ fields.name }}">{{ fields.label }}</label>
+            {% else %}
+            {{ fields }}
+            <label>{{ fields.label }}</label>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+      {% comment %} <div class="row">
+        <div class="input-field col s12">
+          <input id="id_username" name="username" type="text" class="validate">
+          <label for="id_username">Nombre de usuario</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="id_password" name="password" type="password" class="validate">
+          <label for="id_password">Contraseña</label>
+          <div><a href="#"><b>¿Olvidó su contraseña?</b></a></div>
+        </div>
+      </div> {% endcomment %}
+      <div class="row"></div>
+      <div class="row">
+        <div class="col s6"><a href="#">Registrar nueva cuenta</a></div>
+        <div class="col s6 right-align"><button class="waves-effect waves-light btn" type="submit">Login</button></div>
+      </div>
+    </form>
+    
+  </div>
+</body>
+
+</html>

@@ -10,7 +10,12 @@ def home(request, *args, **kwargs):
 
 def tablavisita(request, *args, **kwargs):
   data = list(Visita.objects.values())
+  for d in data:
+    d['escuela_id'] = Escuela.objects.get(codigo=d['escuela_id']).nombre
+    d['asesoria_id'] = Asesoria.objects.get(id=d['asesoria_id']).nombre
+    d['profesores'] = list(DetalleProfesor.objects.filter(visita_id=d['id']).values())
   campos = ["Nombre", "Activo"]
+  print(data)
   contexto = {
     "data": data,
     "campos": campos,
@@ -21,21 +26,31 @@ def tablavisita(request, *args, **kwargs):
   return render(request, "tabla.html", contexto)
 
 def registrovisita(request, *args, **kwargs):
+
+  DetalleProfesorFormSet = forms.inlineformset_factory(Visita, DetalleProfesor, form=DetalleProfesorForm, extra=2)
+
+  eform = VisitaEscuelaForm(request.POST or None)
+  pform = DetalleProfesorFormSet(request.POST or None)
+  form = VisitaForm(request.POST or None)
+
   if request.method == "POST":
-    eform = VisitaEscuelaForm(request.POST)
-    pform = DetalleProfesorFormSet(request.POST)
-    form = VisitaForm(request.POST)
-    print(pform.data)
-    print(pform.errors)
+    print(form.data)
+    print(form.errors)
     if form.is_valid():
-      form.save()
+      if eform.is_valid():
+        if pform.is_valid():
+          visita = form.save()
+          for p in pform.cleaned_data:
+            if p:
+              p.pop('visita')
+              p.pop('DELETE')
+              instancia = p.pop('enfoque')
+              detalleprofesor = DetalleProfesor.objects.create(visita=visita, **p)
+              detalleprofesor.enfoque.set(instancia)
       messages.success(request, "Visita registrada correctamente")
     else:
       form.add_error(None, "Visita no registrada")
-  else:
-    eform = VisitaEscuelaForm()
-    pform = DetalleProfesorFormSet()
-    form = VisitaForm()
+
   contexto = {
     "eform": eform,
     "pform": pform,

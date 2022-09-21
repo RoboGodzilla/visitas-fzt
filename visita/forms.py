@@ -34,7 +34,7 @@ class VisitaEscuelaForm(forms.ModelForm):
 
 class DetalleProfesorForm(forms.ModelForm):
   profesor = NombreModelChoiceField(queryset=Profesor.objects.filter(is_active=True))
-  enfoque = NombreMultipleModelChoiceField(queryset=Enfoque.objects.filter(is_active=True))
+  enfoque = forms.ModelMultipleChoiceField(queryset=Enfoque.objects.filter(is_active=True), widget=forms.CheckboxSelectMultiple, required=True)
   class Meta:
     model = DetalleProfesor
     exclude = [
@@ -45,25 +45,23 @@ class DetalleProfesorForm(forms.ModelForm):
       'updated_at',
     ]
 
-DetalleProfesorFormSet = forms.inlineformset_factory(Visita, DetalleProfesor, form=DetalleProfesorForm, extra=2)
-
 class VisitaForm(forms.ModelForm):
+  escuela = forms.HiddenInput()
   asesoria = NombreModelChoiceField(queryset=Asesoria.objects.filter(is_active=True))
   tipo_visita = NombreModelChoiceField(queryset=TipoVisita.objects.filter(is_active=True))
   modalidad_visita = forms.ChoiceField(choices=Visita.MODALIDAD, required=True)
   fecha = forms.DateField(widget=forms.DateInput(attrs={'class': 'datepicker'}), input_formats=settings.DATE_INPUT_FORMATS)
   duracion = forms.DurationField(widget=forms.NumberInput(attrs={'class': 'validate'}))
-  enfoque = NombreModelChoiceField(queryset=Enfoque.objects.filter(is_active=True))
   comentarios = forms.CharField(max_length=500, required=False)
   class Meta:
     model = Visita
     fields = [
+      'escuela',
       'asesoria',
       'tipo_visita',
       'modalidad_visita',
       'fecha',
       'duracion',
-      'enfoque',
       'comentarios',
     ]
 
