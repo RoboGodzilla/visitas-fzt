@@ -1,13 +1,16 @@
 from django.shortcuts import render
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 from visita.models import *
 from .forms import *
 
 # Create your views here.
+@login_required
 def home(request, *args, **kwargs):
   return render(request, "home.html", {})
 
+@login_required
 def tablavisita(request, *args, **kwargs):
   data = list(Visita.objects.values())
   for d in data:
@@ -25,9 +28,10 @@ def tablavisita(request, *args, **kwargs):
   }
   return render(request, "tabla.html", contexto)
 
+@login_required
 def registrovisita(request, *args, **kwargs):
 
-  DetalleProfesorFormSet = forms.inlineformset_factory(Visita, DetalleProfesor, form=DetalleProfesorForm, extra=2)
+  DetalleProfesorFormSet = forms.inlineformset_factory(Visita, DetalleProfesor, form=DetalleProfesorForm, extra=2, can_delete=False)
 
   eform = VisitaEscuelaForm(request.POST or None)
   pform = DetalleProfesorFormSet(request.POST or None)
@@ -60,6 +64,7 @@ def registrovisita(request, *args, **kwargs):
   }
   return render(request, "registro.html", contexto)
 
+@login_required
 def tablaescuela(request, *args, **kwargs):
   data = list(Escuela.objects.values('codigo','nombre', 'ciudad', 'modalidad', 'dependencia', 'is_active'))
   for d in data:
@@ -74,6 +79,7 @@ def tablaescuela(request, *args, **kwargs):
   }
   return render(request, "tabla.html", contexto)
 
+@login_required
 def registroescuela(request, *args, **kwargs):
   if request.method == "POST":
     form = EscuelaForm(request.POST)
@@ -91,6 +97,7 @@ def registroescuela(request, *args, **kwargs):
   }
   return render(request, "registro.html", contexto)
 
+@login_required
 def tablaprofesor(request, *args, **kwargs):
   data = list(Profesor.objects.values('codigo', 'nombre', 'grados_asign', 'escuela', 'is_active'))
   for d in data:
@@ -105,6 +112,7 @@ def tablaprofesor(request, *args, **kwargs):
   }
   return render(request, "tabla.html", contexto)
 
+@login_required
 def registroprofesor(request, *args, **kwargs):
   if request.method == "POST":
 
@@ -124,6 +132,7 @@ def registroprofesor(request, *args, **kwargs):
   }
   return render(request, "registro.html", contexto)
 
+@login_required
 def tablaasesor(request, *args, **kwargs):
   data = list(Asesoria.objects.values('nombre', 'area', 'is_active'))
   campos = ["Nombre", "Area de Asesoría", "Activo"]
@@ -136,6 +145,7 @@ def tablaasesor(request, *args, **kwargs):
   }
   return render(request, "tabla.html", contexto)
 
+@login_required
 def registroasesor(request, *args, **kwargs):
   if request.method == "POST":
     form = AsesorForm(request.POST)

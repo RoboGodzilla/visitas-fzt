@@ -14,10 +14,13 @@ class IdNombreMultipleModelChoiceField(forms.ModelMultipleChoiceField):
     label = str(obj.codigo) + " [" + obj.nombre + "]"
     return label
 
-class NombreMultipleModelChoiceField(forms.ModelMultipleChoiceField):
+class NombreModelMultipleChoiceField(forms.ModelMultipleChoiceField):
   def label_from_instance(self, obj):
     label = obj.nombre
     return label
+
+class CheckboxModelMultipleChoiceField(forms.CheckboxSelectMultiple):
+  option_template_name = 'modelcheckbox.html'
 
 class NombreModelChoiceField(forms.ModelChoiceField):
   def label_from_instance(self, obj):
@@ -34,7 +37,7 @@ class VisitaEscuelaForm(forms.ModelForm):
 
 class DetalleProfesorForm(forms.ModelForm):
   profesor = NombreModelChoiceField(queryset=Profesor.objects.filter(is_active=True))
-  enfoque = forms.ModelMultipleChoiceField(queryset=Enfoque.objects.filter(is_active=True), widget=forms.CheckboxSelectMultiple, required=True)
+  enfoque = NombreModelMultipleChoiceField(queryset=Enfoque.objects.filter(is_active=True), widget=CheckboxModelMultipleChoiceField, required=True)
   class Meta:
     model = DetalleProfesor
     exclude = [

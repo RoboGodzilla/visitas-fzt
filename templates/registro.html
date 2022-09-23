@@ -60,35 +60,33 @@
         <blockquote>
           <h5 class="blue-text" >Profesor</h5>
         </blockquote>
-        {{ pform }}
-        {% for field in pform %}
-          {% for iterable in field %}
-            {% for element in iterable %}
-              {{ element }}
-            {% endfor %}
-          {% endfor %}
+        {{ pform.management_form }}
+        {% for f in pform %}
+          <div class="row">
+            {{ f }}
+          </div>
         {% endfor %}
         <div class="row">
           <div class="input-field col s4">
-            <input id="first_name" type="text" class="validate">
+            <input id="first_name" type="text" class="validate" disabled>
             <label for="first_name">Nombre</label>
           </div>
           <div class="input-field col s4">
-            <input id="last_name" type="text" class="validate">
+            <input id="last_name" type="text" class="validate" disabled>
             <label for="last_name">Cédula</label>
           </div>
           <div class="input-field col s4">
-            <input id="last_name" type="text" class="validate">
+            <input id="last_name" type="text" class="validate" disabled>
             <label for="last_name">Telefono</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col s6">
-            <input id="first_name" type="text" class="validate">
+            <input id="first_name" type="text" class="validate" disabled>
             <label for="first_name">Grados Asignados</label>
           </div>
           <div class="input-field col s6">
-            <input id="last_name" type="text" class="validate">
+            <input id="last_name" type="text" class="validate" disabled>
             <label for="last_name">Escuela</label>
           </div>
         </div>

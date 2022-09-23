@@ -1,14 +1,17 @@
 from django.shortcuts import render
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 from catalogo.models import *
 
 from .forms import *
 
 # Create your views here.
+@login_required
 def home(request, *args, **kwargs):
   return render(request, "home.html", {})
 
+@login_required
 def tablapais(request, *args, **kwargs):
   data = list(Pais.objects.values('id', 'nombre', 'is_active'))
   campos = ["Nombre", "Activo"]
@@ -22,6 +25,7 @@ def tablapais(request, *args, **kwargs):
   }
   return render(request, "tabla.html", contexto)
 
+@login_required
 def registropais(request, *args, **kwargs):
   if request.method == "POST":
     form = PaisForm(request.POST)
@@ -39,6 +43,7 @@ def registropais(request, *args, **kwargs):
   }
   return render(request, "registro.html", contexto)
 
+@login_required
 def detallepais(request, id, *args, **kwargs):
   try:
     pais = Pais.objects.get(id=id)
@@ -52,6 +57,7 @@ def detallepais(request, id, *args, **kwargs):
   }
   return render(request, "detalles.html", contexto)
 
+@login_required
 def tablaestado(request, *args, **kwargs):
   data = list(Estado.objects.values('nombre', 'pais', 'is_active'))
   for d in data:
@@ -66,6 +72,7 @@ def tablaestado(request, *args, **kwargs):
   }
   return render(request, "tabla.html", contexto)
 
+@login_required
 def registroestado(request, *args, **kwargs):
   if request.method == "POST":
     form = EstadoForm(request.POST)
@@ -83,6 +90,7 @@ def registroestado(request, *args, **kwargs):
   }
   return render(request, "registro.html", contexto)
 
+@login_required
 def tablaciudad(request, *args, **kwargs):
   data = list(Ciudad.objects.values('nombre', 'estado', 'is_active'))
   for d in data:
@@ -97,6 +105,7 @@ def tablaciudad(request, *args, **kwargs):
   }
   return render(request, "tabla.html", contexto)
 
+@login_required
 def registrociudad(request, *args, **kwargs):
   if request.method == "POST":
     form = CiudadForm(request.POST)
@@ -114,6 +123,7 @@ def registrociudad(request, *args, **kwargs):
   }
   return render(request, "registro.html", contexto)
 
+@login_required
 def tablaareaasesoria(request, *args, **kwargs):
   data = list(AreaAsesoria.objects.values('nombre', 'is_active'))
   campos = ["Nombre", "Activo"]
@@ -126,6 +136,7 @@ def tablaareaasesoria(request, *args, **kwargs):
   }
   return render(request, "tabla.html", contexto)
 
+@login_required
 def registroareaasesoria(request, *args, **kwargs):
   if request.method == "POST":
     form = AreaAsesoriaForm(request.POST)
@@ -143,6 +154,7 @@ def registroareaasesoria(request, *args, **kwargs):
   }
   return render(request, "registro.html", contexto)
 
+@login_required
 def tablatipovisita(request, *args, **kwargs):
   data = list(TipoVisita.objects.values('nombre', 'is_active'))
   campos = ["Nombre", "Activo"]
@@ -155,6 +167,7 @@ def tablatipovisita(request, *args, **kwargs):
   }
   return render(request, "tabla.html", contexto)
 
+@login_required
 def registrotipovisita(request, *args, **kwargs):
   if request.method == "POST":
     form = TipoVisitaForm(request.POST)
@@ -172,6 +185,7 @@ def registrotipovisita(request, *args, **kwargs):
   }
   return render(request, "registro.html", contexto)
 
+@login_required
 def tablaenfoque(request, *args, **kwargs):
   data = list(Enfoque.objects.values('nombre', 'tipo_visita', 'is_active'))
   for d in data:
@@ -186,6 +200,7 @@ def tablaenfoque(request, *args, **kwargs):
   }
   return render(request, "tabla.html", contexto)
 
+@login_required
 def registroenfoque(request, *args, **kwargs):
   if request.method == "POST":
     form = EnfoqueForm(request.POST)
