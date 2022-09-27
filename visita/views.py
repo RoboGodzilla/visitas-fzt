@@ -29,7 +29,6 @@ def tablavisita(request, *args, **kwargs):
     d['profesores'] = list(DetalleProfesor.objects.filter(visita_id=d['id']).values())
     d['is_active'] = Visita.objects.get(id=d['id']).is_active
   campos = ["Escuela", "Asesor", "Tipo Visita", "Modalidad", "Fecha", "Duracion", "Comentarios", "Profesores", "Activo"]
-  print(data)
   contexto = {
     "data": data,
     "campos": campos,
