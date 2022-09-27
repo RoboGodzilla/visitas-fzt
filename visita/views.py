@@ -12,12 +12,23 @@ def home(request, *args, **kwargs):
 
 @login_required
 def tablavisita(request, *args, **kwargs):
-  data = list(Visita.objects.values())
+  data = list(Visita.objects.values(
+    'id',
+    'escuela_id',
+    'asesoria_id',
+    'tipo_visita_id',
+    'modalidad_visita',
+    'fecha',
+    'duracion',
+    'comentarios',
+    ))
   for d in data:
+    d['tipo_visita_id'] = TipoVisita.objects.get(id=d['tipo_visita_id']).nombre
     d['escuela_id'] = Escuela.objects.get(codigo=d['escuela_id']).nombre
     d['asesoria_id'] = Asesoria.objects.get(id=d['asesoria_id']).nombre
     d['profesores'] = list(DetalleProfesor.objects.filter(visita_id=d['id']).values())
-  campos = ["Nombre", "Activo"]
+    d['is_active'] = Visita.objects.get(id=d['id']).is_active
+  campos = ["Escuela", "Asesor", "Tipo Visita", "Modalidad", "Fecha", "Duracion", "Comentarios", "Profesores", "Activo"]
   print(data)
   contexto = {
     "data": data,
@@ -135,6 +146,8 @@ def registroprofesor(request, *args, **kwargs):
 @login_required
 def tablaasesor(request, *args, **kwargs):
   data = list(Asesoria.objects.values('nombre', 'area', 'is_active'))
+  for d in data:
+    d['area'] = AreaAsesoria.objects.get(id=d['area']).nombre
   campos = ["Nombre", "Area de Asesoría", "Activo"]
   contexto = {
     "data": data,

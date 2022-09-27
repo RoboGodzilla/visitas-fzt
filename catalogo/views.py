@@ -92,10 +92,12 @@ def registroestado(request, *args, **kwargs):
 
 @login_required
 def tablaciudad(request, *args, **kwargs):
-  data = list(Ciudad.objects.values('nombre', 'estado', 'is_active'))
+  data = list(Ciudad.objects.values('nombre', 'estado'))
   for d in data:
+    d['pais'] = Estado.objects.get(id=d['estado']).pais.nombre
+    d['is_active'] = Estado.objects.get(id=d['estado']).is_active
     d['estado'] = Estado.objects.get(id=d['estado']).nombre
-  campos = ["Nombre", "Estado", "Activo"]
+  campos = ["Nombre", "Estado", "Pais", "Activo"]
   contexto = {
     "data": data,
     "campos": campos,

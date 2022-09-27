@@ -14,7 +14,7 @@
 </div>
 <div class="row">
   <div class="col s12">
-    <table>
+    <table class="responsive-table centered">
       <thead>
         <tr>
           {% for obj in campos %}
@@ -28,6 +28,21 @@
           {% for key, obj in objeto.items %}
             {% if key == "id" %}
             {% elif key == "profesores" %}
+            <td>
+              <a class="btn-floating btn-flat waves-effect waves-dark white modal-trigger" href="#modal1">
+                <i class="large material-icons blue-text">open_in_new</i>
+              </a>
+              <!-- Modal Structure -->
+              <div id="modal1" class="modal">
+                <div class="modal-content">
+                  <h4>Modal Header</h4>
+                  <p>{{ obj }}</p>
+                </div>
+                <div class="modal-footer">
+                  <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+                </div>
+              </div>
+            </td>
             {% elif key == "is_active" %}
               {% if obj == True%}
                 <td>
