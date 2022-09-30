@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
+from collections import defaultdict
+
 from catalogo.models import *
 
 from .forms import *
@@ -33,7 +35,7 @@ def registropais(request, *args, **kwargs):
       form.save()
       messages.success(request, "Pais registrado correctamente")
     else:
-      form.add_error(None, "Pais no registrado")
+      messages.error(request, "Pais no registrado")
   else:
     form = PaisForm()
   contexto = {
@@ -80,7 +82,7 @@ def registroestado(request, *args, **kwargs):
       form.save()
       messages.success(request, "Estado registrado correctamente")
     else:
-      form.add_error(None, "Estado no registrado")
+      messages.error(request, "Estado no registrado")
   else:
     form = EstadoForm()
   contexto = {
@@ -115,7 +117,7 @@ def registrociudad(request, *args, **kwargs):
       form.save()
       messages.success(request, "Ciudad registrada correctamente")
     else:
-      form.add_error(None, "Ciudad no registrada")
+      messages.error(request, "Ciudad no registrada")
   else:
     form = CiudadForm()
   contexto = {
@@ -146,7 +148,7 @@ def registroareaasesoria(request, *args, **kwargs):
       form.save()
       messages.success(request, "Area de asesoria registrada correctamente")
     else:
-      form.add_error(None, "Area de asesoria no registrada")
+      messages.error(request, "Area de asesoria no registrada")
   else:
     form = AreaAsesoriaForm()
   contexto = {
@@ -177,7 +179,7 @@ def registrotipovisita(request, *args, **kwargs):
       form.save()
       messages.success(request, "Tipo de visita registrada correctamente")
     else:
-      form.add_error(None, "Tipo de visita no registrada")
+      messages.error(request, "Tipo de visita no registrada")
   else:
     form = TipoVisitaForm()
   contexto = {
@@ -215,12 +217,79 @@ def registroenfoque(request, *args, **kwargs):
       #   if 'unique constraint' in e.message:
       #     pass
     else:
-      form.add_error(None, "Enfoque no registrado")
+      messages.error(request, "Enfoque no registrado")
   else:
     form = EnfoqueForm()
   contexto = {
     "form": form,
     "menu": "datosvisita",
     "submenu": "enfoque"
+  }
+  return render(request, "registro.html", contexto)
+
+def tablausuarios(request, *args, **kwargs):
+  data = list(User.objects.values('username', 'first_name', 'last_name', 'groups', 'is_active'))
+  campos = ["Usuario", "Nombre", "Apellido", "Roles", "Activo"]
+  contexto = {
+    "data": data,
+    "campos": campos,
+    "registro": "regusuario",
+    "menu": "cuentas",
+    "submenu": "usuarios"
+  }
+  return render(request, "tabla.html", contexto)
+
+def registrousuario(request, *args, **kwargs):
+  if request.method == "POST":
+    form = UserForm(request.POST)
+    if form.is_valid():
+      form.save()
+      messages.success(request, "Usuario registrado correctamente")
+    else:
+      messages.error(request, "Usuario no registrado")
+  else:
+    form = UserForm()
+  contexto = {
+    "form": form,
+    "menu": "cuentas",
+    "submenu": "usuarios"
+  }
+  return render(request, "registro.html", contexto)
+
+def tablaroles(request, *args, **kwargs):
+  queryset = Group.objects.values('id', 'name')
+  for q in queryset:
+    q['permissions'] = Group.objects.get(pk = q['id']).permissions.values()
+
+  data = list(queryset)
+  # newdata = defaultdict(list)
+  # for d in data:
+  #   d['permissions'] = Permission.objects.get(id=d['permissions']).name
+  print(data)
+  campos = ["Nombre", "Permisos"]
+  contexto = {
+    "data": data,
+    "campos": campos,
+    "registro": "regrol",
+    "menu": "cuentas",
+    "submenu": "roles"
+  }
+  return render(request, "tabla.html", contexto)
+
+def registrorol(request, *args, **kwargs):
+  if request.method == "POST":
+    form = GroupForm(request.POST)
+    if form.is_valid():
+      # form.save()
+      print(form.cleaned_data)
+      messages.success(request, "Rol registrado correctamente")
+    else:
+      messages.error(request, "Rol no registrado")
+  else:
+    form = GroupForm()
+  contexto = {
+    "form": form,
+    "menu": "cuentas",
+    "submenu": "roles"
   }
   return render(request, "registro.html", contexto)

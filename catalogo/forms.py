@@ -11,6 +11,9 @@ class NombreModelChoiceField(forms.ModelChoiceField):
 class MatCheckboxInput(forms.CheckboxInput):
     template_name = 'matcheckbox.html'
 
+class CheckboxModelMultipleChoiceField(forms.CheckboxSelectMultiple):
+  option_template_name = 'modelcheckbox.html'
+
 class PaisForm(forms.ModelForm):
 
   is_active = MatCheckboxInput()
@@ -65,3 +68,31 @@ class EnfoqueForm(forms.ModelForm):
       'tipo_visita',
       'valores',
     ]
+
+class UserForm(forms.ModelForm):
+  password = forms.CharField(widget=forms.PasswordInput())
+  class Meta:
+    model = User
+    fields = [
+      'username',
+      'password',
+      'first_name',
+      'last_name',
+      'email',
+      'groups',
+    ]
+
+class GroupForm(forms.ModelForm):
+  class Meta:
+    model = Group
+    fields = [
+      'name',
+      'permissions',
+    ]
+    widgets = {
+      'permissions': CheckboxModelMultipleChoiceField(),
+    }
+    labels = {
+      'name': 'Nombre',
+      'permissions': '',
+    }

@@ -20,4 +20,10 @@ urlpatterns = [
     # path('<int:question_id>/', views.detail, name='detail'),
     # path('<int:question_id>/results/', views.results, name='results'),
     # path('<int:question_id>/vote/', views.vote, name='vote'),
+
+    path('usuarios', views.tablausuarios, name='usuarios'),
+    path('usuarios/registro', views.registrousuario, name='regusuario'),
+
+    path('roles', views.tablaroles, name='roles'),
+    path('roles/registro', views.registrorol, name='regrol'),
 ]

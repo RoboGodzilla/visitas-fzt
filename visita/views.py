@@ -48,22 +48,27 @@ def registrovisita(request, *args, **kwargs):
   form = VisitaForm(request.POST or None)
 
   if request.method == "POST":
-    print(form.data)
     print(form.errors)
-    if form.is_valid():
-      if eform.is_valid():
-        if pform.is_valid():
-          visita = form.save()
-          for p in pform.cleaned_data:
-            if p:
-              p.pop('visita')
-              p.pop('DELETE')
-              instancia = p.pop('enfoque')
-              detalleprofesor = DetalleProfesor.objects.create(visita=visita, **p)
-              detalleprofesor.enfoque.set(instancia)
+    if form.is_valid() and eform.is_valid() and pform.is_valid():
+      print(form.cleaned_data)
+      visita = Visita.objects.create(
+        escuela=eform.cleaned_data['escuela'],
+        asesoria=form.cleaned_data['asesoria'],
+        tipo_visita=form.cleaned_data['tipo_visita'],
+        modalidad_visita=form.cleaned_data['modalidad_visita'],
+        fecha=form.cleaned_data['fecha'],
+        duracion=form.cleaned_data['duracion'],
+        comentarios=form.cleaned_data['comentarios'],
+      )
+      for p in pform.cleaned_data:
+        if p:
+          p.pop('visita')
+          instancia = p.pop('enfoque')
+          detalleprofesor = DetalleProfesor.objects.create(visita=visita, **p)
+          detalleprofesor.enfoque.set(instancia)
       messages.success(request, "Visita registrada correctamente")
     else:
-      form.add_error(None, "Visita no registrada")
+      messages.error(request, "Visita no registrada")
 
   contexto = {
     "eform": eform,
@@ -97,7 +102,7 @@ def registroescuela(request, *args, **kwargs):
       form.save()
       messages.success(request, "Escuela registrada correctamente")
     else:
-      form.add_error(None, "Escuela no registrada")
+      messages.error(request, "Escuela no registrada")
   else:
     form = EscuelaForm()
   contexto = {
@@ -132,7 +137,7 @@ def registroprofesor(request, *args, **kwargs):
       form.save()
       messages.success(request, "Profesor registrado correctamente")
     else:
-      form.add_error(None, "Profesor no registrado")
+      messages.error(request, "Profesor no registrado")
   else:
     form = ProfesorForm()
   contexto = {
@@ -165,7 +170,7 @@ def registroasesor(request, *args, **kwargs):
       form.save()
       messages.success(request, "Asesor registrado correctamente")
     else:
-      form.add_error(None, "Asesor no registrado")
+      messages.error(request, "Asesor no registrado")
   else:
     form = AsesorForm()
   contexto = {

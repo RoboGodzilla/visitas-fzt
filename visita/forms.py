@@ -49,7 +49,6 @@ class DetalleProfesorForm(forms.ModelForm):
     ]
 
 class VisitaForm(forms.ModelForm):
-  escuela = forms.HiddenInput()
   asesoria = NombreModelChoiceField(queryset=Asesoria.objects.filter(is_active=True))
   tipo_visita = NombreModelChoiceField(queryset=TipoVisita.objects.filter(is_active=True))
   modalidad_visita = forms.ChoiceField(choices=Visita.MODALIDAD, required=True)
@@ -59,7 +58,6 @@ class VisitaForm(forms.ModelForm):
   class Meta:
     model = Visita
     fields = [
-      'escuela',
       'asesoria',
       'tipo_visita',
       'modalidad_visita',
